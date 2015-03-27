@@ -26,16 +26,22 @@ table_names = map(lambda x: x[0], table_names)
 #cur.execute("select * from ac_grass_roots_in_state")
 root_query = "select * from "
 
+cur.execute(root_query + table_names[0])
+
+table = cur.fetchall()
+
+
 ###df = read_sql(())
 
 #df = read_sql(('select "*" from "ac_grass_roots_in_state" '), cur)
                      #'where "Timestamp" BETWEEN %(dstart)s AND %(dfinish)s'),
-df = pd.read_sql("SELECT * from raw_committee_transactions", cur)
+#df = pd.read_sql("SELECT * from raw_committee_transactions", cur)
 
 #df = read_sql_table(cur,cur)
 
 #cur.execute("select column_name, data_type, character_maximum_length from INFORMATION_SCHEMA.COLUMNS where table_name = '';")
 #print cur.fetchall()
+
 
 
 
