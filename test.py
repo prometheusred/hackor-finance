@@ -11,19 +11,17 @@ import numpy as np
 conn = pg.connect("dbname=hackoregon user=jonathan.streater")
 cur = conn.cursor()
 
-
-def table_to_df(table):
-    sorted_table = sorted(table, key=lambda tup: tup[1])
+def table_to_df(table, sort=False):
+    if sort:
+        table = sorted(table, key=lambda tup: tup[1])
     column_names = [name[0] for name in cur.description]
-    labeled_table = map(lambda d: dict(zip(column_names, d)), sorted_table)
+    labeled_table = map(lambda d: dict(zip(column_names, d)), table)
     return pd.DataFrame(labeled_table)
 
 def get_table(table_name):
-    #global cur
     query = "select * from " + table_name
     cur.execute(query)
     return cur.fetchall()
-
 
 
 #cur.execute("select sum(amount), filer from  raw_committee_transactions where contributor_payee = 'Fulcrum Political, LLC' group by filer order by sum(amount) desc;")
@@ -38,14 +36,11 @@ table_names = map(lambda x: x[0], table_names)
 #cur.execute("select * from ac_grass_roots_in_state")
 
 
-se_transactions = table_to_df(get_table('working_transactions'))
-
+se_transactions = table_to_df(get_table('working_transactions'), True)
 se_candidate_committees = table_to_df(get_table('working_candidate_committees'))
-#se_transactions = pd.Series(sorted_table)
-
 se_candidate_filings = table_to_df(get_table('working_candidate_filings'))
-
 se_working_committees = table_to_df(get_table('working_committees'))
+#se_transactions = pd.Series(sorted_table)
 
 
 
