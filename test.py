@@ -4,6 +4,7 @@ from pandas.io.sql import read_sql
 import pandas as pd
 import numpy as np
 import networkx as nx
+import matplotlib as mp
 
 
 conn = pg.connect("dbname=hackoregon user=jonathan.streater")
@@ -17,7 +18,7 @@ def table_to_df(table, sort=False):
     if sort:
         table = sorted(table, key=lambda tup: tup[1])
     column_names = [name[0] for name in cur.description]
-    labeled_table = map(lambda d: dict(zip(column_names, d)), table)
+    labeled_table = map(lambda row: dict(zip(column_names, row)), table)
     return pd.DataFrame(labeled_table)
 
 def get_table(table_name):
